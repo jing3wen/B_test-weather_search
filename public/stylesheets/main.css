@@ -1,0 +1,76 @@
+
+a {
+    color: #00B7FF;
+}
+
+
+html {
+    height: 100%;
+}
+
+body {
+    margin-top: 60px;
+    /* padding-top: 50px;*/
+    /*边界看宽度默认为8,在这里初始值设为零*/
+    height: 100%;
+    /*display: inline-block 转换为行内块元素*/
+    /*display: flex 将该标签作为弹性布局的容器*/
+    display: flex;
+    /*指定容器内的item布局方向*/
+    /*row 容器内的item按照x轴(主轴方向布局)*/
+    /*column 容器内的item按照y轴(交叉轴)方向布局*/
+    /*row-reverse 容器内的item按照x轴反向布局*/
+    /*column-reserve 容器内的item按照y轴反向布局*/
+    flex-direction: column;
+    /*文本居中*/
+    text-align: center;
+    /*设置背景图片*/
+    background-image: url("/public/images/background/back1.png");
+    background-size: 100%;
+    /*主轴项目item的布局方式*/
+    justify-content: space-between;
+    /*交叉轴的项目item布局方式*/
+    /*align-items: ;*/
+}
+
+
+img {
+    /*width: 设置图片显示宽度，高度会自适应*/
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+}
+
+/*自定义的一种button和text*/
+.button_custom {
+    font-size: 20px;
+    font-weight: 600;
+    background-color: skyblue;
+    color: white;
+}
+
+.text_custom {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+}
+
+.text_custom2 {
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+}
+
+
+footer {
+    /*display: flex 将该标签作为弹性布局的容器*/
+    display: flex;
+    /*设置item的布局方式*/
+    justify-content: space-between;
+}
+
+    footer section {
+        /*宽度占比33%*/
+        width: 33%;
+        border-right: 1px black solid;
+    }

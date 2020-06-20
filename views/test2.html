@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--meta 单标签 用来引入或声明一些内容-->
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://localhost:8001/public/stylesheets/main.css" />
+    <!--viewport 视口-->
+    <!--width 设置视口宽度-->
+    <!--user-scalable 网页是否可以被缩放-->
+    <!--initial-scale 网页被加载时，初始的比例-->
+    <!--maximum-scale 网页最大的放大比例-->
+    <!--minimum-scale 网页最小的缩放比例-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!--title 标题标签-->
+    <title>天气预报</title>
+ 
+</head>
+
+<!--body 标记网页主题信息-->
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="background-color:skyblue;width:100%;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <img src="/public/images/weather/logo.png" class="img">
+            </div>
+            <a class="navbar-brand text_custom" href="#" id="city" style="color:white ;"></a>
+            <div>
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control " id="address" placeholder="搜索" style=" font-size:20px; font-weight:600;">
+                    </div>
+                    <button type="button" class="btn button_custom" id="submit">更换当前城市</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+   
+
+    <!--footer 网页中的尾部内容-->
+    <footer style="padding-top:20px">
+        <!--section 组件、模块, 块元素-->
+        <section>
+            <!--h1~h6 标题标签, 标签独自占一行空间，称之为块元素-->
+            <img id="weather_img" calt="">
+            <h2 id="tem" class="text_custom2"></h2>
+            <h3 id="wea" class="text_custom2"></h3>
+        </section>
+        <section>
+            <p id="humidity" class="text_custom"></p>
+            <!--p标签，用来标记网页中的段落内容！-->
+            <p id="air" class="text_custom"></p>
+            <p id="air_level" class="text_custom"></p>
+            <p id="air_tips" class="text_custom"></p>
+        </section>
+        <section>
+            <div id="day_chart" class="col-lg-7 col-md-12" style="height:250px;width:100%"></div>
+        </section>
+    </footer>
+
+
+
+    <div id="week_chart" class="col-lg-7 col-md-12" style="height:400px;width:100%"></div>
+
+
+</body>
+</html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script>
+
+    $(function () {
+        url = 'https://www.tianqiapi.com/api?version=v1&appid=95524623&appsecret=TIi1iG5Z';
+        $.getJSON(url, function (result) {
+            $("#city").text("当前所在城市: "+result.city);
+            console.log(result);
+            var thisday = result.data[0];
+            show_backimg(thisday)
+            show_weather(thisday);
+
+            //渲染折线表day_chart
+            var data_x2 = new Array;
+            var point_tem2 = new Array;
+            var point_humidity2 = new Array;
+
+            for (var i = 0; i < thisday.hours.length; i++) {
+                data_x2[i] = thisday.hours[i].day;
+                point_tem2[i] = parseInt(thisday.hours[i].tem);
+
+            }
+            console.log(data_x2)
+            show_chart2(data_x2, point_tem2, point_humidity2, "day_chart");
+
+
+            //渲染折线表week_chart
+            var data_x = new Array;
+            var point_tem = new Array;
+            var point_humidity = new Array;
+
+            for (var i = 0; i < 7; i++) {
+                data_x[i] = result.data[i].date;
+                point_tem[i] = parseInt(result.data[i].tem1);
+                point_humidity[i] = parseInt(result.data[i].tem2);
+            }
+            console.log(data_x)
+            show_chart(data_x, point_tem, point_humidity,"week_chart");
+        })
+    })
+
+    $("#submit").click(function () {
+        var address = $("#address").val();
+        if (address == "")
+            url = 'https://www.tianqiapi.com/api?version=v1&appid=95524623&appsecret=TIi1iG5Z';
+        else {
+            url = 'https://www.tianqiapi.com/api?version=v1&appid=95524623&appsecret=TIi1iG5Z' + '&city=' + address;         
+        }
+        console.log(url);
+        $.getJSON(url, function (result) {
+            console.log(result);
+            $("#city").text("查询城市: " + result.city);
+            var thisday = result.data[0];
+            show_backimg(thisday);
+            show_weather(thisday);
+
+            //渲染折线表day_chart
+            var data_x2 = new Array;
+            var point_tem2 = new Array;
+            var point_humidity2 = new Array;
+
+            for (var i = 0; i < thisday.hours.length; i++) {
+                data_x2[i] = thisday.hours[i].day;
+                point_tem2[i] = parseInt(thisday.hours[i].tem);
+
+            }
+            console.log(data_x2)
+            show_chart2(data_x2, point_tem2, point_humidity2, "day_chart");
+
+
+            //渲染折线表week_chart
+            var data_x = new Array;
+            var point_tem=new Array;
+            var point_humidity=new Array;   
+       
+            for (var i = 0; i < 7; i++) {
+                data_x[i] = result.data[i].date;
+                point_tem[i] = parseInt(result.data[i].tem1);
+                point_humidity[i] = parseInt(result.data[i].tem2);
+            }
+            console.log(data_x)
+            show_chart(data_x, point_tem, point_humidity,"week_chart");
+
+      
+        })
+
+    })
+
+
+
+    //渲染折线表week_chart
+    function show_chart(data_x, point_tem, point_humidity,chart_name) {
+        // 初始化天气折线图
+        var weather = echarts.init($('#' + chart_name).get(0));
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left', // 'center' | 'left' | {number},
+                y: 'center', // 'center' | 'bottom' | {number}
+                data: ['最高温度', '最低温度']
+            },
+            /*
+            grid: { // 控制图表与canvas的留白
+                x: 130,  //左
+                y: 10, //上
+                x2: 0, //右
+                y2: 50, //下
+            },*/
+
+
+            xAxis: {
+                type: 'category',
+                name: '',
+                data: data_x,
+                axisTick: { // 控制x轴是否显示
+                    alignWithLabel: true,
+                    show: true
+                },
+                splitLine: {
+                    show: false,//X轴的刻度参考线
+                    lineStyle: {
+                        color: '#E0E0E0'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#E0E0E0', //设置x轴线的颜色
+                        width: 1 // 这里是为了突出显示加上的
+                    }
+                },
+                axisLabel: {
+                    'interval': 0,
+                    rotate: 40,//x轴上的文字多的时候，会有重叠，所以用个倾斜角度，满足完整展示文字的需求
+                    color: '#333333'//x轴上的文字颜色
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '未来7天温度℃',
+                splitLine: { // 控制背景长横线
+                    show: true,
+                    color: '#e0e0e0'
+                },
+                axisLine: { // 控制Y轴刻度线
+                    show: false,
+                    lineStyle: {
+                        color: '#333333'
+                    }
+                },
+                axisTick: { // 控制Y轴显示
+                    show: false
+                }
+            },
+            series: [
+                {
+                    name: '最高温度',
+                    type: 'line',
+                    symbol: 'circle', // 设定为实心点
+                    symbolSize: 8, // 设定实心点的大小
+                    data: point_tem,
+                    itemStyle: {
+                        normal: {
+                            color: ['#7BCC23'],
+                            lineStyle: {
+                                color: ['#7BCC23'],
+                            }
+                        }
+                    }
+                },
+                {
+                    name: '最低温度',
+                    type: 'line',
+                    symbol: 'circle', // 设定为实心点
+                    symbolSize: 8, // 设定实心点的大小
+                    data: point_humidity,
+                    itemStyle: {
+                        normal: {
+                            color: ['#0A9CF8'],
+                            lineStyle: {
+                                color: ['#0A9CF8'],
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+        //weather.xAxis.data[0] = 'test';
+        weather.setOption(option);
+        window.onresize = weather.resize;
+    }
+    //渲染折现表day_chart
+    function show_chart2(data_x, point_tem, point_humidity, chart_name) {
+        // 初始化天气折线图
+        var weather = echarts.init($('#' + chart_name).get(0));
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left', // 'center' | 'left' | {number},
+                y: 'center', // 'center' | 'bottom' | {number}
+                data: ['温度']
+            },
+            /*
+            grid: { // 控制图表与canvas的留白
+                x: 130,  //左
+                y: 10, //上
+                x2: 0, //右
+                y2: 50, //下
+            },*/
+
+
+            xAxis: {
+                type: 'category',
+                name: '',
+                data: data_x,
+                axisTick: { // 控制x轴是否显示
+                    alignWithLabel: true,
+                    show: true
+                },
+                splitLine: {
+                    show: false,//X轴的刻度参考线
+                    lineStyle: {
+                        color: '#E0E0E0'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#E0E0E0', //设置x轴线的颜色
+                        width: 1 // 这里是为了突出显示加上的
+                    }
+                },
+                axisLabel: {
+                    'interval': 0,
+                    rotate: 40,//x轴上的文字多的时候，会有重叠，所以用个倾斜角度，满足完整展示文字的需求
+                    color: '#333333'//x轴上的文字颜色
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '今天温度 ℃',
+                splitLine: { // 控制背景长横线
+                    show: true,
+                    color: '#e0e0e0'
+                },
+                axisLine: { // 控制Y轴刻度线
+                    show: false,
+                    lineStyle: {
+                        color: '#333333'
+                    }
+                },
+                axisTick: { // 控制Y轴显示
+                    show: false
+                }
+            },
+            series: [
+                {
+                    //name: '温度',
+                    type: 'line',
+                    symbol: 'circle', // 设定为实心点
+                    symbolSize: 8, // 设定实心点的大小
+                    data: point_tem,
+                    itemStyle: {
+                        normal: {
+                            color: ['#7BCC23'],
+                            lineStyle: {
+                                color: ['#7BCC23'],
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+        //weather.xAxis.data[0] = 'test';
+        weather.setOption(option);
+        window.onresize = weather.resize;
+    }
+
+    //渲染某一天的详细天气信息，***注意参数是某一天***
+    function show_weather(weather_thisday) {
+
+        $("#tem").text(weather_thisday.tem2 + " ~ "+weather_thisday.tem1);
+        $("#wea").text(weather_thisday.wea);
+        $("#humidity").text("湿度: " + weather_thisday.humidity);
+        $("#air").text("空气质量: "+weather_thisday.air);
+        $("#air_level").text("空气质量等级: "+weather_thisday.air_level);
+        $("#air_tips").text(weather_thisday.air_tips);
+
+    }
+        
+    //图片的渲染
+    function show_backimg(weather_thisday) {
+        //photopath = '/public/images/' + weather_thisday.wea_img+ '.jpg'
+        //$("body").css("background-image", "url( /public/images/background/back.png)");      
+        $("#weather_img").attr("src", " /public/images/weather/" + weather_thisday.wea_img + ".png");
+
+    }
+
+
+</script>
