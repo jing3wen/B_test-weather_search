@@ -29,7 +29,7 @@
             </div>
             <a class="navbar-brand text_custom" href="#" id="city" style="color:white ;"></a>
             <div>
-                <form class="navbar-form navbar-right" role="search">
+                <form class="navbar-form navbar-right" role="search" onsubmit="return false;">
                     <div class="form-group">
                         <input type="text" class="form-control " id="address" placeholder="搜索" style=" font-size:20px; font-weight:600;">
                     </div>
@@ -97,7 +97,7 @@
                 point_tem2[i] = parseInt(thisday.hours[i].tem);
 
             }
-            console.log(data_x2)
+            //console.log(data_x2)
             show_chart2(data_x2, point_tem2, point_humidity2, "day_chart");
 
 
@@ -111,7 +111,7 @@
                 point_tem[i] = parseInt(result.data[i].tem1);
                 point_humidity[i] = parseInt(result.data[i].tem2);
             }
-            console.log(data_x)
+            //console.log(data_x)
             show_chart(data_x, point_tem, point_humidity,"week_chart");
         })
     })
@@ -141,7 +141,7 @@
                 point_tem2[i] = parseInt(thisday.hours[i].tem);
 
             }
-            console.log(data_x2)
+            //console.log(data_x2)
             show_chart2(data_x2, point_tem2, point_humidity2, "day_chart");
 
 
@@ -155,7 +155,7 @@
                 point_tem[i] = parseInt(result.data[i].tem1);
                 point_humidity[i] = parseInt(result.data[i].tem2);
             }
-            console.log(data_x)
+            //console.log(data_x)
             show_chart(data_x, point_tem, point_humidity,"week_chart");
 
       
@@ -376,6 +376,14 @@
         $("#weather_img").attr("src", " /public/images/weather/" + weather_thisday.wea_img + ".png");
 
     }
+
+    //回车事件绑定
+    $(document).keyup(function (e) {     
+        if (e.keyCode == 13) {
+            //console.log("****回车事件触发");
+            $("#submit").click();
+        }
+    });
 
 
 </script>
