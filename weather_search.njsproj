@@ -52,6 +52,7 @@
     <Content Include="public\images\weather\yujiaxue.png" />
     <Content Include="public\images\weather\yun.jpg" />
     <Content Include="public\images\weather\yun.png" />
+    <Content Include="public\images\运行结果.png" />
     <Content Include="routes\index.js" />
     <Content Include="routes\users.js" />
     <Content Include="package.json" />
