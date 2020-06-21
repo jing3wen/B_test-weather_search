@@ -11,37 +11,37 @@ html {
 body {
     margin-top: 60px;
     /* padding-top: 50px;*/
-    /*±ß½ç¿´¿í¶ÈÄ¬ÈÏÎª8,ÔÚÕâÀï³õÊ¼ÖµÉèÎªÁã*/
+    /*è¾¹ç•Œçœ‹å®½åº¦é»˜è®¤ä¸º8,åœ¨è¿™é‡Œåˆå§‹å€¼è®¾ä¸ºé›¶*/
     height: 100%;
-    /*display: inline-block ×ª»»ÎªĞĞÄÚ¿éÔªËØ*/
-    /*display: flex ½«¸Ã±êÇ©×÷Îªµ¯ĞÔ²¼¾ÖµÄÈİÆ÷*/
+    /*display: inline-block è½¬æ¢ä¸ºè¡Œå†…å—å…ƒç´ */
+    /*display: flex å°†è¯¥æ ‡ç­¾ä½œä¸ºå¼¹æ€§å¸ƒå±€çš„å®¹å™¨*/
     display: flex;
-    /*Ö¸¶¨ÈİÆ÷ÄÚµÄitem²¼¾Ö·½Ïò*/
-    /*row ÈİÆ÷ÄÚµÄitem°´ÕÕxÖá(Ö÷Öá·½Ïò²¼¾Ö)*/
-    /*column ÈİÆ÷ÄÚµÄitem°´ÕÕyÖá(½»²æÖá)·½Ïò²¼¾Ö*/
-    /*row-reverse ÈİÆ÷ÄÚµÄitem°´ÕÕxÖá·´Ïò²¼¾Ö*/
-    /*column-reserve ÈİÆ÷ÄÚµÄitem°´ÕÕyÖá·´Ïò²¼¾Ö*/
+    /*æŒ‡å®šå®¹å™¨å†…çš„itemå¸ƒå±€æ–¹å‘*/
+    /*row å®¹å™¨å†…çš„itemæŒ‰ç…§xè½´(ä¸»è½´æ–¹å‘å¸ƒå±€)*/
+    /*column å®¹å™¨å†…çš„itemæŒ‰ç…§yè½´(äº¤å‰è½´)æ–¹å‘å¸ƒå±€*/
+    /*row-reverse å®¹å™¨å†…çš„itemæŒ‰ç…§xè½´åå‘å¸ƒå±€*/
+    /*column-reserve å®¹å™¨å†…çš„itemæŒ‰ç…§yè½´åå‘å¸ƒå±€*/
     flex-direction: column;
-    /*ÎÄ±¾¾ÓÖĞ*/
+    /*æ–‡æœ¬å±…ä¸­*/
     text-align: center;
-    /*ÉèÖÃ±³¾°Í¼Æ¬*/
+    /*è®¾ç½®èƒŒæ™¯å›¾ç‰‡*/
     background-image: url("/public/images/background/back1.png");
     background-size: 100%;
-    /*Ö÷ÖáÏîÄ¿itemµÄ²¼¾Ö·½Ê½*/
+    /*ä¸»è½´é¡¹ç›®itemçš„å¸ƒå±€æ–¹å¼*/
     justify-content: space-between;
-    /*½»²æÖáµÄÏîÄ¿item²¼¾Ö·½Ê½*/
+    /*äº¤å‰è½´çš„é¡¹ç›®itemå¸ƒå±€æ–¹å¼*/
     /*align-items: ;*/
 }
 
 
 img {
-    /*width: ÉèÖÃÍ¼Æ¬ÏÔÊ¾¿í¶È£¬¸ß¶È»á×ÔÊÊÓ¦*/
+    /*width: è®¾ç½®å›¾ç‰‡æ˜¾ç¤ºå®½åº¦ï¼Œé«˜åº¦ä¼šè‡ªé€‚åº”*/
     border-radius: 8px;
     max-width: 100%;
     height: auto;
 }
 
-/*×Ô¶¨ÒåµÄÒ»ÖÖbuttonºÍtext*/
+/*è‡ªå®šä¹‰çš„ä¸€ç§buttonå’Œtext*/
 .button_custom {
     font-size: 20px;
     font-weight: 600;
@@ -63,14 +63,15 @@ img {
 
 
 footer {
-    /*display: flex ½«¸Ã±êÇ©×÷Îªµ¯ĞÔ²¼¾ÖµÄÈİÆ÷*/
+    /*display: flex å°†è¯¥æ ‡ç­¾ä½œä¸ºå¼¹æ€§å¸ƒå±€çš„å®¹å™¨*/
     display: flex;
-    /*ÉèÖÃitemµÄ²¼¾Ö·½Ê½*/
+    /*è®¾ç½®itemçš„å¸ƒå±€æ–¹å¼*/
     justify-content: space-between;
 }
 
     footer section {
-        /*¿í¶ÈÕ¼±È33%*/
+        /*å®½åº¦å æ¯”33%*/
         width: 33%;
-        border-right: 1px black solid;
+        border-right: 1px #ebeef0 solid;
+        padding: 0px 20px;
     }
