@@ -81,82 +81,111 @@
     $(function () {
         url = 'https://www.tianqiapi.com/api?version=v1&appid=95524623&appsecret=TIi1iG5Z';
         $.getJSON(url, function (result) {
-            $("#city").text("当前所在城市: "+result.city);
+            $("#city").text("当前所在城市: " + result.city);
+            console.log("天气api获取的json数据");
             console.log(result);
             var thisday = result.data[0];
-            show_backimg(thisday)
+            show_backimg(thisday);
             show_weather(thisday);
 
-            //渲染折线表day_chart
+            //渲染折线表day_chart,通过天气api来获得数据
             var data_x2 = new Array;
-            var point_tem2 = new Array;
-            var point_humidity2 = new Array;
-
+            var point_tem = new Array;           
             for (var i = 0; i < thisday.hours.length; i++) {
                 data_x2[i] = thisday.hours[i].day;
-                point_tem2[i] = parseInt(thisday.hours[i].tem);
+                point_tem[i] = parseInt(thisday.hours[i].tem);
 
             }
             //console.log(data_x2)
-            show_chart2(data_x2, point_tem2, point_humidity2, "day_chart");
+            show_chart2(data_x2, point_tem, "day_chart");
 
 
-            //渲染折线表week_chart
+            //渲染折线表week_chart，通过天气api和和风天气api共同获得
             var data_x = new Array;
-            var point_tem = new Array;
+            var point_tem1 = new Array;
+            var point_tem2 = new Array;
             var point_humidity = new Array;
 
-            for (var i = 0; i < 7; i++) {
-                data_x[i] = result.data[i].date;
-                point_tem[i] = parseInt(result.data[i].tem1);
-                point_humidity[i] = parseInt(result.data[i].tem2);
-            }
-            //console.log(data_x)
-            show_chart(data_x, point_tem, point_humidity,"week_chart");
+            //对项目进行二次修改，通过和风天气api来获取湿度变化数据,先通过天气api调用相关数据获得城市result.cityid,再用和风天气api获取未来7天湿度数据
+            url = 'https://devapi.heweather.net/v7/weather/7d?location=' + result.cityid + '&key=65de01ef4b164ead86a2ef7c00fc9ce2';
+            $.getJSON(url, function (result2) {
+                //console.log("和风天气api请求的json数据");
+                //console.log(result2);
+                for (var i = 0; i < 7; i++) {
+                    point_humidity[i] = result2.daily[i].humidity;
+                }
+                //对当天湿度渲染
+                $("#humidity").text("湿度: " + point_humidity[0]);
+                //console.log("湿度数据: " + point_humidity);
+                for (var i = 0; i < 7; i++) {
+                    data_x[i] = result.data[i].date;
+                    point_tem1[i] = parseInt(result.data[i].tem1);
+                    point_tem2[i] = parseInt(result.data[i].tem2);
+
+                }
+                //console.log(data_x)
+                show_chart(data_x, point_tem1, point_tem2, point_humidity, "week_chart");
+            });
+           
         })
     })
 
     $("#submit").click(function () {
         var address = $("#address").val();
+        
         if (address == "")
             url = 'https://www.tianqiapi.com/api?version=v1&appid=95524623&appsecret=TIi1iG5Z';
         else {
             url = 'https://www.tianqiapi.com/api?version=v1&appid=95524623&appsecret=TIi1iG5Z' + '&city=' + address;         
         }
-        console.log(url);
+
         $.getJSON(url, function (result) {
+            console.log("天气api获取的json数据");
             console.log(result);
             $("#city").text("查询城市: " + result.city);
             var thisday = result.data[0];
             show_backimg(thisday);
             show_weather(thisday);
 
+
             //渲染折线表day_chart
             var data_x2 = new Array;
-            var point_tem2 = new Array;
-            var point_humidity2 = new Array;
+            var point_tem = new Array;           
 
             for (var i = 0; i < thisday.hours.length; i++) {
                 data_x2[i] = thisday.hours[i].day;
-                point_tem2[i] = parseInt(thisday.hours[i].tem);
+                point_tem[i] = parseInt(thisday.hours[i].tem);
 
             }
             //console.log(data_x2)
-            show_chart2(data_x2, point_tem2, point_humidity2, "day_chart");
+            show_chart2(data_x2, point_tem, "day_chart");
 
 
             //渲染折线表week_chart
             var data_x = new Array;
-            var point_tem=new Array;
-            var point_humidity=new Array;   
-       
-            for (var i = 0; i < 7; i++) {
-                data_x[i] = result.data[i].date;
-                point_tem[i] = parseInt(result.data[i].tem1);
-                point_humidity[i] = parseInt(result.data[i].tem2);
-            }
-            //console.log(data_x)
-            show_chart(data_x, point_tem, point_humidity,"week_chart");
+            var point_tem1 = new Array;
+            var point_tem2 = new Array;
+            var point_humidity = new Array;
+
+            url = 'https://devapi.heweather.net/v7/weather/7d?location=' + result.cityid + '&key=65de01ef4b164ead86a2ef7c00fc9ce2';
+            $.getJSON(url, function (result2) {
+                //console.log("和风天气api请求的json数据");
+                //console.log(result2);
+                for (var i = 0; i < 7; i++) {
+                    point_humidity[i] = result2.daily[i].humidity;
+                }
+                //对当天湿度渲染
+                $("#humidity").text("湿度: " + point_humidity[0]);
+                //console.log("湿度数据: " + point_humidity);
+                for (var i = 0; i < 7; i++) {
+                    data_x[i] = result.data[i].date;
+                    point_tem1[i] = parseInt(result.data[i].tem1);
+                    point_tem2[i] = parseInt(result.data[i].tem2);
+
+                }
+                //console.log(data_x)
+                show_chart(data_x, point_tem1, point_tem2, point_humidity, "week_chart");
+            });
 
       
         })
@@ -166,7 +195,7 @@
 
 
     //渲染折线表week_chart
-    function show_chart(data_x, point_tem, point_humidity,chart_name) {
+    function show_chart(data_x, point_tem1, point_tem2, point_humidity, chart_name) {
         // 初始化天气折线图
         var weather = echarts.init($('#' + chart_name).get(0));
         var option = {
@@ -177,7 +206,7 @@
                 orient: 'vertical',
                 x: 'left', // 'center' | 'left' | {number},
                 y: 'center', // 'center' | 'bottom' | {number}
-                data: ['最高温度', '最低温度']
+                data: ['最高温度', '最低温度','相对湿度']
             },
             /*
             grid: { // 控制图表与canvas的留白
@@ -216,7 +245,7 @@
             },
             yAxis: {
                 type: 'value',
-                name: '未来7天温度℃',
+                name: '未来7天温度℃/相对湿度%rh',
                 splitLine: { // 控制背景长横线
                     show: true,
                     color: '#e0e0e0'
@@ -237,12 +266,12 @@
                     type: 'line',
                     symbol: 'circle', // 设定为实心点
                     symbolSize: 8, // 设定实心点的大小
-                    data: point_tem,
+                    data: point_tem1,
                     itemStyle: {
                         normal: {
-                            color: ['#FF9900'],
+                            color: ['#FF6600'],
                             lineStyle: {
-                                color: ['#FF9900'],
+                                color: ['#FF6600'],
                             }
                         }
                     }
@@ -252,16 +281,32 @@
                     type: 'line',
                     symbol: 'circle', // 设定为实心点
                     symbolSize: 8, // 设定实心点的大小
+                    data: point_tem2,
+                    itemStyle: {
+                        normal: {
+                            color: ['#3366FF'],
+                            lineStyle: {
+                                color: ['#3366FF'],
+                            }
+                        }
+                    }
+                },
+                {
+                    name: '相对湿度',
+                    type: 'line',
+                    symbol: 'circle', // 设定为实心点
+                    symbolSize: 8, // 设定实心点的大小
                     data: point_humidity,
                     itemStyle: {
                         normal: {
-                            color: ['#0A9CF8'],
+                            color: ['#990099'],
                             lineStyle: {
-                                color: ['#0A9CF8'],
+                                color: ['#990099'],
                             }
                         }
                     }
                 }
+
             ]
         }
         //weather.xAxis.data[0] = 'test';
@@ -269,7 +314,7 @@
         window.onresize = weather.resize;
     }
     //渲染折现表day_chart
-    function show_chart2(data_x, point_tem, point_humidity, chart_name) {
+    function show_chart2(data_x, point_tem, chart_name) {
         // 初始化天气折线图
         var weather = echarts.init($('#' + chart_name).get(0));
         var option = {
@@ -362,7 +407,7 @@
 
         $("#tem").text(weather_thisday.tem2 + " ~ "+weather_thisday.tem1);
         $("#wea").text(weather_thisday.wea);
-        $("#humidity").text("湿度: " + weather_thisday.humidity);
+        //$("#humidity").text("湿度: " + weather_thisday.humidity);
         $("#air").text("空气质量: "+weather_thisday.air);
         $("#air_level").text("空气质量等级: "+weather_thisday.air_level);
         $("#air_tips").text(weather_thisday.air_tips);
@@ -385,5 +430,19 @@
         }
     });
 
+    //对项目进行二次修改，通过和风天气api来获取湿度变化数据,先通过天气api调用相关数据获得城市id在用和风天气api获取未来7天湿度数据
+    function hum_data(cityid, point_humidity) {
+
+        url = 'https://devapi.heweather.net/v7/weather/7d?location=' + cityid + '&key=65de01ef4b164ead86a2ef7c00fc9ce2';
+       
+        $.getJSON(url, function (result) {
+            console.log("和风天气api请求的json数据");
+            console.log(result);           
+            for (var i = 0; i < 7; i++) {
+                point_humidity[i] = result.daily[i].humidity;
+            }
+            console.log("湿度数据: " + point_humidity);         
+        });
+    }
 
 </script>
